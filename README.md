@@ -17,5 +17,7 @@
     Example: [API]: implement new func
 
 
-
+https://github.com/oTranscribe/oTranscribe
+https://github.com/raryelcostasouza/pyTranscriber
+https://www.geeksforgeeks.org/python-convert-speech-to-text-and-text-to-speech/
 
