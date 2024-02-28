@@ -4,48 +4,33 @@ Program Purpose: To transcribe the video footage from Dr.Heldman's class
 Programmer: Ruby Goodpasture
 Date: 2/27/2024
 """
-
-import pyaudio
 import speech_recognition as sr
-import pyttsx3
 import os
 
+fileIn = "testfiles/Recording.wav"
+AUDIO_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)), fileIn)
 
-def SpeakText(command):
-     
-    # Initialize the engine
-    engine = pyttsx3.init()
-    engine.say("peetah") 
-    engine.runAndWait()
 
-SpeakText("1")
+# use the audio file as the audio source
+r = sr.Recognizer()
+with sr.AudioFile(AUDIO_FILE) as source:
+    audio = r.record(source)  # read the entire audio file
 
-#while(1):    
-     
-    # Exception handling to handle
-    # exceptions at the runtime
+# recognize speech using Google Speech Recognition
 try:
-    audio = os.open("testfiles/Recording.m4a", os.O_RDWR) 
-    # use the microphone as source for input.
-    #with sr.Microphone() as source2:
-             
-        # wait for a second to let the recognizer
-        # adjust the energy threshold based on
-        # the surrounding noise level 
-        #sr.adjust_for_ambient_noise(source2, duration=0.2)
-             
-        #listens for the user's input 
-        #audio2 = sr.listen(source2)
-             
-        # Using google to recognize audio
-    MyText = sr.recognizer_instance.recognize_google(audio)
-    MyText = MyText.lower()
- 
-    print("Did you say ",MyText)
-    SpeakText(MyText)
-             
-except sr.RequestError as e:
-    print("Could not request results; {0}".format(e))
-         
+    # for testing purposes, we're just using the default API key
+    # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
+    # instead of `r.recognize_google(audio)`
+    trans = r.recognize_google(audio)
+    print("Google Speech Recognition thinks you said " + trans)
 except sr.UnknownValueError:
-    print("unknown error occurred")
+    print("Google Speech Recognition could not understand audio")
+except sr.RequestError as e:
+    print("Could not request results from Google Speech Recognition service; {0}".format(e))
+
+pathOut = "TranscribeOut/test.txt"
+fileOut = os.open(pathOut, os.O_RDWR | os.O_CREAT )
+
+os.write(fileOut, str.encode(trans))
+
+os.close(fileOut)
