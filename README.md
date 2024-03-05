@@ -18,7 +18,7 @@
 
 ## Speech Recognition
 
-required packages: speechrecognition
+required packages: speechrecognition, moviepy
 
 
 https://github.com/Uberi/speech_recognition/blob/master/examples/audio_transcribe.py
